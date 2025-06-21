@@ -1,0 +1,12 @@
+{
+  "availability-zones:account=871427481455:region=ap-northeast-2": [
+    "ap-northeast-2a",
+    "ap-northeast-2b",
+    "ap-northeast-2c",
+    "ap-northeast-2d"
+  ],
+  "hosted-zone:account=871427481455:domainName=iammin.shop:region=ap-northeast-2": {
+    "Id": "/hostedzone/Z083882745TVY15JAYDW",
+    "Name": "iammin.shop."
+  }
+}
