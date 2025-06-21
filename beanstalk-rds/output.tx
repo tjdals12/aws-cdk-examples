@@ -1,0 +1,139 @@
+-----------------------------------------------------------------------------------------------------------------------------
+|                                               DescribeConfigurationOptions                                                |
++----------------------------------------------+------------------------------------------------------+---------------------+
+|                     Name                     |                      Namespace                       |      ValueType      |
++----------------------------------------------+------------------------------------------------------+---------------------+
+|  PolicyNames                                 |  aws:elb:listener                                    |  List               |
+|  SystemType                                  |  aws:elasticbeanstalk:healthreporting:system         |  Scalar             |
+|  Recurrence                                  |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  HasCoupledDatabase                          |  aws:rds:dbinstance                                  |  Boolean            |
+|  LoadBalancerSSLPortProtocol                 |  aws:elb:loadbalancer                                |  Scalar             |
+|  XRayEnabled                                 |  aws:elasticbeanstalk:xray                           |  Scalar             |
+|  PauseTime                                   |  aws:autoscaling:updatepolicy:rollingupdate          |  Scalar             |
+|  ManagedActionsEnabled                       |  aws:elasticbeanstalk:managedactions                 |  Boolean            |
+|  BlockDeviceMappings                         |  aws:autoscaling:launchconfiguration                 |  CommaSeparatedList |
+|  SpotFleetOnDemandAboveBasePercentage        |  aws:ec2:instances                                   |  Scalar             |
+|  Notification Protocol                       |  aws:elasticbeanstalk:sns:topics                     |  Scalar             |
+|  LoadBalancerType                            |  aws:elasticbeanstalk:environment                    |  Scalar             |
+|  InstanceRefreshEnabled                      |  aws:elasticbeanstalk:managedactions:platformupdate  |  Boolean            |
+|  IgnoreHealthCheck                           |  aws:elasticbeanstalk:command                        |  Boolean            |
+|  LaunchType                                  |  aws:elasticbeanstalk:control                        |  Scalar             |
+|  Period                                      |  aws:autoscaling:trigger                             |  Scalar             |
+|  DesiredCapacity                             |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  Suspend                                     |  aws:autoscaling:scheduledaction                     |  Boolean            |
+|  PublicKeyPolicyNames                        |  aws:elb:policies                                    |  CommaSeparatedList |
+|  EnvironmentVariables                        |  aws:cloudformation:template:parameter               |  KeyValueList       |
+|  DeleteOnTerminate                           |  aws:elasticbeanstalk:cloudwatch:logs:health         |  Boolean            |
+|  UpperBreachScaleIncrement                   |  aws:autoscaling:trigger                             |  Scalar             |
+|  InstancePort                                |  aws:elb:listener                                    |  Scalar             |
+|  Automatically Terminate Unhealthy Instances |  aws:elasticbeanstalk:monitoring                     |  Boolean            |
+|  EnableSpot                                  |  aws:ec2:instances                                   |  Boolean            |
+|  HooksPkgUrl                                 |  aws:cloudformation:template:parameter               |  Scalar             |
+|  MonitoringInterval                          |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  ConfigDocument                              |  aws:elasticbeanstalk:healthreporting:system         |  Json               |
+|  EvaluationPeriods                           |  aws:autoscaling:trigger                             |  Scalar             |
+|  RootVolumeSize                              |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  Target                                      |  aws:elb:healthcheck                                 |  Scalar             |
+|  RootVolumeIOPS                              |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  AssociatePublicIpAddress                    |  aws:ec2:vpc                                         |  Boolean            |
+|  DeploymentPolicy                            |  aws:elasticbeanstalk:command                        |  Scalar             |
+|  EnvironmentType                             |  aws:elasticbeanstalk:environment                    |  Scalar             |
+|  UpperThreshold                              |  aws:autoscaling:trigger                             |  Scalar             |
+|  DisableIMDSv1                               |  aws:autoscaling:launchconfiguration                 |  Boolean            |
+|  LoadBalancerPorts                           |  aws:elb:policies                                    |  CommaSeparatedList |
+|  AppSource                                   |  aws:cloudformation:template:parameter               |  Scalar             |
+|  SSLCertificateId                            |  aws:elb:listener                                    |  Scalar             |
+|  VPCId                                       |  aws:ec2:vpc                                         |  Scalar             |
+|  MinSize                                     |  aws:autoscaling:asg                                 |  Scalar             |
+|  SpotFleetOnDemandBase                       |  aws:ec2:instances                                   |  Scalar             |
+|  LaunchTimeout                               |  aws:elasticbeanstalk:control                        |  Scalar             |
+|  RollingUpdateType                           |  aws:autoscaling:updatepolicy:rollingupdate          |  Scalar             |
+|  LowerThreshold                              |  aws:autoscaling:trigger                             |  Scalar             |
+|  Availability Zones                          |  aws:autoscaling:asg                                 |  Scalar             |
+|  InstanceTypeFamily                          |  aws:cloudformation:template:parameter               |  Scalar             |
+|  BreachDuration                              |  aws:autoscaling:trigger                             |  Scalar             |
+|  Subnets                                     |  aws:ec2:vpc                                         |  CommaSeparatedList |
+|  ServiceRoleForManagedUpdates                |  aws:elasticbeanstalk:managedactions                 |  Scalar             |
+|  MinSize                                     |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  LoadBalancerHTTPPort                        |  aws:elb:loadbalancer                                |  Scalar             |
+|  SSHSourceRestriction                        |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  SecurityGroups                              |  aws:autoscaling:launchconfiguration                 |  CommaSeparatedList |
+|  SpotMaxPrice                                |  aws:ec2:instances                                   |  Scalar             |
+|  InstanceProtocol                            |  aws:elb:listener                                    |  Scalar             |
+|  ImageId                                     |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  Timeout                                     |  aws:elasticbeanstalk:command                        |  Scalar             |
+|  HealthyThreshold                            |  aws:elb:healthcheck                                 |  Scalar             |
+|  LaunchTemplateTagPropagationEnabled         |  aws:autoscaling:launchconfiguration                 |  Boolean            |
+|  RetentionInDays                             |  aws:elasticbeanstalk:cloudwatch:logs                |  Scalar             |
+|  UpdateLevel                                 |  aws:elasticbeanstalk:managedactions:platformupdate  |  Scalar             |
+|  RollingUpdateEnabled                        |  aws:autoscaling:updatepolicy:rollingupdate          |  Boolean            |
+|  ConnectionSettingIdleTimeout                |  aws:elb:policies                                    |  Scalar             |
+|  LogPublicationControl                       |  aws:elasticbeanstalk:hostmanager                    |  Boolean            |
+|  MaxSize                                     |  aws:autoscaling:asg                                 |  Scalar             |
+|  RootVolumeThroughput                        |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  ServiceRole                                 |  aws:elasticbeanstalk:environment                    |  Scalar             |
+|  ConnectionDrainingEnabled                   |  aws:elb:policies                                    |  Boolean            |
+|  StaticFiles                                 |  aws:cloudformation:template:parameter               |  KeyValueList       |
+|  PublicKey                                   |  aws:elb:policies                                    |  Scalar             |
+|  ListenerEnabled                             |  aws:elb:listener                                    |  Boolean            |
+|  UnhealthyThreshold                          |  aws:elb:healthcheck                                 |  Scalar             |
+|  DefaultSSHPort                              |  aws:elasticbeanstalk:control                        |  Scalar             |
+|  LoadBalancerPortProtocol                    |  aws:elb:loadbalancer                                |  Scalar             |
+|  Timeout                                     |  aws:elb:healthcheck                                 |  Scalar             |
+|  SSLCertificateId                            |  aws:elb:loadbalancer                                |  Scalar             |
+|  Application Healthcheck URL                 |  aws:elasticbeanstalk:application                    |  Scalar             |
+|  ProxyServer                                 |  aws:elasticbeanstalk:environment:proxy              |  Scalar             |
+|  StartTime                                   |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  MaxSize                                     |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  SecurityGroups                              |  aws:elb:loadbalancer                                |  CommaSeparatedList |
+|  EnhancedHealthAuthEnabled                   |  aws:elasticbeanstalk:healthreporting:system         |  Boolean            |
+|  SpotAllocationStrategy                      |  aws:ec2:instances                                   |  Scalar             |
+|  InstanceType                                |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  BatchSizeType                               |  aws:elasticbeanstalk:command                        |  Scalar             |
+|  MinInstancesInService                       |  aws:autoscaling:updatepolicy:rollingupdate          |  Scalar             |
+|  HealthStreamingEnabled                      |  aws:elasticbeanstalk:cloudwatch:logs:health         |  Boolean            |
+|  Interval                                    |  aws:elb:healthcheck                                 |  Scalar             |
+|  HealthCheckSuccessThreshold                 |  aws:elasticbeanstalk:healthreporting:system         |  Scalar             |
+|  CrossZone                                   |  aws:elb:loadbalancer                                |  Boolean            |
+|  EC2KeyName                                  |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  Notification Topic Name                     |  aws:elasticbeanstalk:sns:topics                     |  Scalar             |
+|  DisableDefaultEC2SecurityGroup              |  aws:autoscaling:launchconfiguration                 |  Boolean            |
+|  ExternalExtensionsS3Key                     |  aws:elasticbeanstalk:environment                    |  Scalar             |
+|  LoadBalancerHTTPSPort                       |  aws:elb:loadbalancer                                |  Scalar             |
+|  SupportedArchitectures                      |  aws:ec2:instances                                   |  CommaSeparatedList |
+|  DeleteOnTerminate                           |  aws:elasticbeanstalk:cloudwatch:logs                |  Boolean            |
+|  LowerBreachScaleIncrement                   |  aws:autoscaling:trigger                             |  Scalar             |
+|  PreferredStartTime                          |  aws:elasticbeanstalk:managedactions                 |  Scalar             |
+|  ConnectionDrainingTimeout                   |  aws:elb:policies                                    |  Scalar             |
+|  InstanceTypes                               |  aws:ec2:instances                                   |  CommaSeparatedList |
+|  MeasureName                                 |  aws:autoscaling:trigger                             |  Scalar             |
+|  MaxBatchSize                                |  aws:autoscaling:updatepolicy:rollingupdate          |  Scalar             |
+|  StreamLogs                                  |  aws:elasticbeanstalk:cloudwatch:logs                |  Boolean            |
+|  Cooldown                                    |  aws:autoscaling:asg                                 |  Scalar             |
+|  Stickiness Cookie Expiration                |  aws:elb:policies                                    |  Scalar             |
+|  InstancePorts                               |  aws:elb:policies                                    |  CommaSeparatedList |
+|  SSLProtocols                                |  aws:elb:policies                                    |  CommaSeparatedList |
+|  Notification Endpoint                       |  aws:elasticbeanstalk:sns:topics                     |  Scalar             |
+|  BatchSize                                   |  aws:elasticbeanstalk:command                        |  Scalar             |
+|  CookieName                                  |  aws:elb:policies                                    |  Scalar             |
+|  SSLReferencePolicy                          |  aws:elb:policies                                    |  Scalar             |
+|  ManagedSecurityGroup                        |  aws:elb:loadbalancer                                |  Scalar             |
+|  ELBSubnets                                  |  aws:ec2:vpc                                         |  CommaSeparatedList |
+|  ListenerProtocol                            |  aws:elb:listener                                    |  Scalar             |
+|  RollbackLaunchOnFailure                     |  aws:elasticbeanstalk:control                        |  Boolean            |
+|  InstancePort                                |  aws:cloudformation:template:parameter               |  Scalar             |
+|  Timeout                                     |  aws:autoscaling:updatepolicy:rollingupdate          |  Scalar             |
+|  EnableCapacityRebalancing                   |  aws:autoscaling:asg                                 |  Boolean            |
+|  Notification Topic ARN                      |  aws:elasticbeanstalk:sns:topics                     |  Scalar             |
+|  RetentionInDays                             |  aws:elasticbeanstalk:cloudwatch:logs:health         |  Scalar             |
+|  IamInstanceProfile                          |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  ProxyProtocol                               |  aws:elb:policies                                    |  Boolean            |
+|  Statistic                                   |  aws:autoscaling:trigger                             |  Scalar             |
+|  Stickiness Policy                           |  aws:elb:policies                                    |  Boolean            |
+|  ExternalExtensionsS3Bucket                  |  aws:elasticbeanstalk:environment                    |  Scalar             |
+|  RootVolumeType                              |  aws:autoscaling:launchconfiguration                 |  Scalar             |
+|  Unit                                        |  aws:autoscaling:trigger                             |  Scalar             |
+|  EndTime                                     |  aws:autoscaling:scheduledaction                     |  Scalar             |
+|  Custom Availability Zones                   |  aws:autoscaling:asg                                 |  List               |
+|  ELBScheme                                   |  aws:ec2:vpc                                         |  Scalar             |
++----------------------------------------------+------------------------------------------------------+---------------------+
