@@ -1,13 +1,13 @@
 // import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
-// import * as CodepiplineEc2 from '../lib/codepipline-ec2-stack';
+// import * as CodepipelineBeanstalk from '../lib/codepipeline-beanstalk-stack';
 
 // example test. To run these tests, uncomment this file along with the
-// example resource in lib/codepipline-ec2-stack.ts
+// example resource in lib/codepipeline-beanstalk-stack.ts
 test('SQS Queue Created', () => {
 //   const app = new cdk.App();
 //     // WHEN
-//   const stack = new CodepiplineEc2.CodepiplineEc2Stack(app, 'MyTestStack');
+//   const stack = new CodepipelineBeanstalk.CodepipelineBeanstalkStack(app, 'MyTestStack');
 //     // THEN
 //   const template = Template.fromStack(stack);
 
