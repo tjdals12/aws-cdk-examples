@@ -3,7 +3,7 @@ yum update -y
 yum install -y nginx
 
 # overwrite
-cat > /etc/nginx/sites-available/default <<EOF
+cat > /etc/nginx/conf.d/app.conf <<EOF
 server {
     listen 80;
 
