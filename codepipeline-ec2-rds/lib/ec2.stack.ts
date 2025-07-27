@@ -17,6 +17,7 @@ interface Ec2StackProps extends cdk.StackProps {
 
 export class Ec2Stack extends cdk.Stack {
   readonly role: iam.IRole;
+  readonly instance: ec2.IInstance;
 
   constructor(scope: Construct, id: string, props: Ec2StackProps) {
     super(scope, id, props);
@@ -127,5 +128,6 @@ export class Ec2Stack extends cdk.Stack {
     rdsSecret.grantRead(role);
 
     this.role = role;
+    this.instance = instance;
   }
 }

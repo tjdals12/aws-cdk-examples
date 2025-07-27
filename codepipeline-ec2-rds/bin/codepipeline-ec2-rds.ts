@@ -5,6 +5,7 @@ import { NetworkStack } from "../lib/network.stack";
 import { Ec2Stack } from "../lib/ec2.stack";
 import { RdsStack } from "../lib/rds.stack";
 import { CodepipelineStack } from "../lib/codepipeline.stack";
+import { CloudWatchDashboardStack } from "../lib/cloudwatch-dashboard.stack";
 
 dotenv.config();
 
@@ -15,6 +16,12 @@ if (!stage) throw new Error();
 
 const SSH_IP = process.env.SSH_IP;
 if (!SSH_IP) throw new Error();
+
+const ALARM_EMAILS = process.env.ALARM_EMAILS;
+if (!ALARM_EMAILS) throw new Error();
+
+const alarmEmails = ALARM_EMAILS.split(",");
+if (alarmEmails.length === 0) throw new Error();
 
 const project = app.node.tryGetContext("project")[stage];
 if (!project) throw new Error();
@@ -48,3 +55,13 @@ const codepipelinStack = new CodepipelineStack(app, "codepipeline-stack", {
   rdsSecret: rdsStack.secret,
   ec2Role: ec2Stack.role,
 });
+
+const cloudwatchDashboardStack = new CloudWatchDashboardStack(
+  app,
+  "cloudwatch-dashboard-stack",
+  {
+    project,
+    emails: alarmEmails,
+    ec2Instance: ec2Stack.instance,
+  }
+);

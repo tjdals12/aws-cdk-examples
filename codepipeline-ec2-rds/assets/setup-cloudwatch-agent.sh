@@ -6,6 +6,9 @@ mkdir -p /opt/aws/amazon-cloudwatch-agent/etc/
 
 cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 {
+  "agent": {
+    "run_as_user": "root"
+  },
   "logs": {
     "logs_collected": {
       "files": {
@@ -17,6 +20,22 @@ cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
           }
         ]
       }
+    }
+  },
+  "metrics": {
+    "metrics_collected": {
+      "disk": {
+        "measurement": ["used_percent"],
+        "metrics_collection_interval": 60,
+        "resources": ["*"]
+      },
+      "mem": {
+        "measurement": ["mem_used_percent"],
+        "metrics_collection_interval": 60
+      }
+    },
+    "append_dimensions": {
+      "InstanceId": "\${aws:InstanceId}"
     }
   }
 }
