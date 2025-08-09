@@ -23,6 +23,9 @@ if (!ALARM_EMAILS) throw new Error();
 const alarmEmails = ALARM_EMAILS.split(",");
 if (alarmEmails.length === 0) throw new Error();
 
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
+if (!SLACK_WEBHOOK_URL) throw new Error();
+
 const project = app.node.tryGetContext("project")[stage];
 if (!project) throw new Error();
 
@@ -63,5 +66,6 @@ const cloudwatchDashboardStack = new CloudWatchDashboardStack(
     project,
     emails: alarmEmails,
     ec2Instance: ec2Stack.instance,
+    slackWebhookUrl: SLACK_WEBHOOK_URL,
   }
 );
