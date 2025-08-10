@@ -13,7 +13,7 @@ export class CodepipelineStack extends cdk.Stack {
     const sourceOutput = new codepipeline.Artifact("SourceArtf");
     const sourceAction = new codepipelineActions.GitHubSourceAction({
       output: sourceOutput,
-      actionName: "my-project-source",
+      actionName: "myproject-source",
       owner: "tjdals12",
       repo: "my-project",
       branch: "feat/amazon-linux",
@@ -30,7 +30,7 @@ export class CodepipelineStack extends cdk.Stack {
     const buildAction = new codepipelineActions.CodeBuildAction({
       input: sourceOutput,
       outputs: [buildOutput],
-      actionName: "my-project-build",
+      actionName: "myproject-build",
       project: new codebuild.PipelineProject(this, "CodeBuild", {
         buildSpec: codebuild.BuildSpec.fromSourceFilename("buildspec.yml"),
         environment: {
@@ -42,13 +42,13 @@ export class CodepipelineStack extends cdk.Stack {
     // deploy
     const deployAction = new codepipelineActions.ElasticBeanstalkDeployAction({
       input: buildOutput,
-      actionName: "my-project-deploy",
-      environmentName: "my-project-env",
-      applicationName: "my-project",
+      actionName: "myproject-deploy",
+      environmentName: "myproject-env",
+      applicationName: "myproject",
     });
 
     new codepipeline.Pipeline(this, "CodePipeline", {
-      pipelineName: "my-project-pipeline",
+      pipelineName: "myproject-pipeline",
       stages: [
         {
           stageName: "Source",

@@ -6,6 +6,7 @@ import { BeanstalkStack } from "../lib/beanstalk-stack";
 import { CodepipelineStack } from "../lib/codepipeline-stack";
 import { NetworkStack } from "../lib/network-stack";
 import { RdsStack } from "../lib/rds-stack";
+import { DashboardStack } from "../lib/dashboard-stack";
 
 dotenv.config();
 
@@ -18,10 +19,15 @@ const rdsStack = new RdsStack(app, "RdsStack", {
   rdsSecurityGroup: networkStack.rdsSecurityGroup,
 });
 
-new BeanstalkStack(app, "BeanstalkStack", {
+const beanstalkStack = new BeanstalkStack(app, "BeanstalkStack", {
   vpc: networkStack.vpc,
   instanceSecurityGroup: networkStack.instanceSecurityGroup,
   rdsSecretName: rdsStack.rdsInstance.secret!.secretName,
 });
 
 new CodepipelineStack(app, "CodepipelineStack");
+
+new DashboardStack(app, "DashboardStack", {
+  loadBalancerName: beanstalkStack.loadBalancerName,
+  autoScalingGroupName: beanstalkStack.autoScalingGroupName,
+});

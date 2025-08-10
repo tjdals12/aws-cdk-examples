@@ -6,6 +6,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as s3Assets from "aws-cdk-lib/aws-s3-assets";
 import * as elasticbeanstalk from "aws-cdk-lib/aws-elasticbeanstalk";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as customResources from "aws-cdk-lib/custom-resources";
 
 export interface BeanstalkStackProps extends cdk.StackProps {
   vpc: ec2.Vpc;
@@ -14,6 +15,9 @@ export interface BeanstalkStackProps extends cdk.StackProps {
 }
 
 export class BeanstalkStack extends cdk.Stack {
+  readonly loadBalancerName: string;
+  readonly autoScalingGroupName: string;
+
   constructor(scope: Construct, id: string, props: BeanstalkStackProps) {
     super(scope, id, props);
 
@@ -32,7 +36,7 @@ export class BeanstalkStack extends cdk.Stack {
       this,
       "EBApplication",
       {
-        applicationName: "my-project",
+        applicationName: "myproject",
       }
     );
     const ebApplicationVersion = new elasticbeanstalk.CfnApplicationVersion(
@@ -52,6 +56,9 @@ export class BeanstalkStack extends cdk.Stack {
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
           "AWSElasticBeanstalkWebTier"
+        ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "AmazonSSMManagedInstanceCore"
         ),
       ],
     });
@@ -82,7 +89,7 @@ export class BeanstalkStack extends cdk.Stack {
       this,
       "EBEnvironment",
       {
-        environmentName: "my-project-env",
+        environmentName: "myproject-env",
         applicationName: ebApplication.applicationName!,
         versionLabel: ebApplicationVersion.ref,
         solutionStackName: "64bit Amazon Linux 2023 v6.5.2 running Node.js 22",
@@ -125,7 +132,7 @@ export class BeanstalkStack extends cdk.Stack {
           {
             namespace: "aws:autoscaling:launchconfiguration",
             optionName: "EC2KeyName",
-            value: "my-project-dev",
+            value: "myproject-dev-key-pair",
           },
           // EC2 인스턴스의 보안 그룹에 SSH 인바운드 규칙을 추가 (이 값을 지정하지 않으면 SSH를 퍼블릭으로 설정함.)
           {
@@ -140,6 +147,66 @@ export class BeanstalkStack extends cdk.Stack {
             optionName: "EnvironmentType",
             value: "LoadBalanced",
           },
+
+          // Classic Load Balancer를 사용할 경우
+          // {
+          //   namespace: "aws:elb:listener",
+          //   optionName: "ListenerProtocol",
+          //   value: "HTTP",
+          // },
+          // {
+          //   namespace: "aws:elb:loadbalancer",
+          //   optionName: "LoadBalancerHTTPPort",
+          //   value: "80",
+          // },
+          // {
+          //   namespace: "aws:elb:listener",
+          //   optionName: "InstanceProtocol",
+          //   value: "HTTP",
+          // },
+          // {
+          //   namespace: "aws:elb:listener",
+          //   optionName: "InstancePort",
+          //   value: "80",
+          // },
+
+          // Application Load Balancer를 사용할 경우
+          {
+            namespace: "aws:elasticbeanstalk:environment",
+            optionName: "LoadBalancerType",
+            value: "application",
+          },
+          {
+            namespace: "aws:elbv2:listener:default",
+            optionName: "ListenerEnabled",
+            value: "true",
+          },
+          {
+            namespace: "aws:elbv2:listener:default",
+            optionName: "Protocol",
+            value: "HTTP",
+          },
+          {
+            namespace: "aws:elbv2:listener:default",
+            optionName: "DefaultProcess",
+            value: "default",
+          },
+          {
+            namespace: "aws:elasticbeanstalk:environment:process:default",
+            optionName: "Port",
+            value: "80",
+          },
+          {
+            namespace: "aws:elasticbeanstalk:environment:process:default",
+            optionName: "Protocol",
+            value: "HTTP",
+          },
+          {
+            namespace: "aws:elasticbeanstalk:environment:process:default",
+            optionName: "HealthCheckPath",
+            value: "/",
+          },
+
           {
             namespace: "aws:autoscaling:asg",
             optionName: "MinSize",
@@ -163,26 +230,6 @@ export class BeanstalkStack extends cdk.Stack {
           //   optionName: "SecurityGroups",
           //   value: albSecurityGroup.securityGroupId,
           // },
-          {
-            namespace: "aws:elb:listener",
-            optionName: "ListenerProtocol",
-            value: "HTTP",
-          },
-          {
-            namespace: "aws:elb:loadbalancer",
-            optionName: "LoadBalancerHTTPPort",
-            value: "80",
-          },
-          {
-            namespace: "aws:elb:listener",
-            optionName: "InstanceProtocol",
-            value: "HTTP",
-          },
-          {
-            namespace: "aws:elb:listener",
-            optionName: "InstancePort",
-            value: "80",
-          },
 
           // Env
           {
@@ -201,5 +248,63 @@ export class BeanstalkStack extends cdk.Stack {
 
     ebApplicationVersion.addDependency(ebApplication);
     ebEnvironment.addDependency(ebApplicationVersion);
+
+    const customResourcesRole = new iam.Role(this, "CustomResourceRole", {
+      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole"
+        ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("ReadOnlyAccess"),
+      ],
+    });
+    const environmentResources = new customResources.AwsCustomResource(
+      this,
+      "ElasticElbName",
+      {
+        role: customResourcesRole,
+        onCreate: {
+          service: "ElasticBeanstalk",
+          action: "DescribeEnvironmentResources",
+          parameters: { EnvironmentName: "myproject-env" },
+          physicalResourceId:
+            customResources.PhysicalResourceId.of("EbClassicElbName"),
+        },
+        onUpdate: {
+          service: "ElasticBeanstalk",
+          action: "DescribeEnvironmentResources",
+          parameters: { EnvironmentName: "myproject-env" },
+          physicalResourceId:
+            customResources.PhysicalResourceId.of("EbClassicElbName"),
+        },
+        policy: customResources.AwsCustomResourcePolicy.fromStatements([
+          new iam.PolicyStatement({
+            actions: [
+              "elasticbeanstalk:DescribeEnvironmentResources",
+              "autoscaling:DescribeAutoScalingGroups",
+            ],
+            resources: ["*"],
+          }),
+        ]),
+      }
+    );
+
+    environmentResources.node.addDependency(ebEnvironment);
+
+    const loadBalancerName = cdk.Fn.select(
+      1,
+      cdk.Fn.split(
+        "loadbalancer/",
+        environmentResources.getResponseField(
+          "EnvironmentResources.LoadBalancers.0.Name"
+        )
+      )
+    );
+    const autoScalingGroupName = environmentResources.getResponseField(
+      "EnvironmentResources.AutoScalingGroups.0.Name"
+    );
+
+    this.loadBalancerName = loadBalancerName;
+    this.autoScalingGroupName = autoScalingGroupName;
   }
 }
