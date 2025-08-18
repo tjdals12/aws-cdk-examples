@@ -1,0 +1,33 @@
+name: install-nginx
+description: Install and enable nginx
+schemaVersion: 1.0
+phases:
+  - name: build
+    steps:
+      - name: UpdatePackages
+        action: ExecuteBash
+        maxAttempts: 1
+        inputs:
+          commands:
+            - sudo dnf -y update
+
+      - name: InstallNginx
+        action: ExecuteBash
+        maxAttempts: 1
+        inputs:
+          commands:
+            - sudo dnf -y install nginx
+
+      - name: EnableNginx
+        action: ExecuteBash
+        maxAttempts: 1
+        inputs:
+          commands:
+            - sudo systemctl enable nginx
+
+      - name: StartNginx
+        action: ExecuteBash
+        maxAttempts: 1
+        inputs:
+          commands:
+            - sudo systemctl start nginx

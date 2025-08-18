@@ -1,0 +1,73 @@
+name: configure-cloudwatch-agent
+description: Configure CloudWatch Agent to collect mem/disk metrics and nginx logs
+schemaVersion: 1.0
+phases:
+  - name: build
+    steps:
+      - name: UpdatePackages
+        action: ExecuteBash
+        maxAttempts: 1
+        onFailure: Abort
+        inputs:
+          commands:
+            - sudo dnf -y update
+      - name: WriteConfig
+        action: ExecuteBash
+        maxAttempts: 1
+        onFailure: Abort
+        inputs:
+          commands:
+            - |
+              sudo tee /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json > /dev/null <<'JSON'
+              {
+                "logs": {
+                  "logs_collected": {
+                    "files": {
+                      "collect_list": [
+                        {
+                          "file_path": "/var/log/nginx/*.log",
+                          "log_group_name": "/aws/ec2/my-instance",
+                          "log_stream_name": "{instance_id}",
+                          "timestamp_format": "%Y-%m-%d %H:%M:%S",
+                          "retention_in_days": 7
+                        }
+                      ]
+                    }
+                  }
+                },
+                "metrics": {
+                  "aggregation_dimensions": [["InstanceId"]],
+                  "append_dimensions": {
+                    "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+                    "ImageId": "${aws:ImageId}",
+                    "InstanceId": "${aws:InstanceId}",
+                    "InstanceType": "${aws:InstanceType}"
+                  },
+                  "metrics_collected": {
+                    "disk": {
+                      "measurement": ["used_percent"],
+                      "metrics_collection_interval": 60,
+                      "resources": ["*"]
+                    },
+                    "mem": {
+                      "measurement": ["mem_used_percent"],
+                      "metrics_collection_interval": 60
+                    }
+                  }
+                }
+              }
+              JSON
+      - name: EnableAndStart
+        action: ExecuteBash
+        maxAttempts: 1
+        onFailure: Abort
+        inputs:
+          commands:
+            - |
+              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+              -a fetch-config \
+              -m ec2 \
+              -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
+              -s
+              sudo systemctl enable amazon-cloudwatch-agent
+              sudo systemctl start amazon-cloudwatch-agent

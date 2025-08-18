@@ -1,0 +1,11 @@
+{
+  "availability-zones:account=871427481455:region=ap-northeast-2": [
+    "ap-northeast-2a",
+    "ap-northeast-2b",
+    "ap-northeast-2c",
+    "ap-northeast-2d"
+  ],
+  "key-provider:account=871427481455:aliasName=alias/aws/ebs:region=ap-northeast-2": {
+    "keyId": "c30541cb-6227-4867-b39e-0b3fdf2fbd13"
+  }
+}
