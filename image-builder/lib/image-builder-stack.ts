@@ -153,6 +153,7 @@ export class ImageBuilderStack extends cdk.Stack {
           {
             region,
             amiDistributionConfiguration: {
+              name: "my-al2023-{{ imagebuilder:buildVersion }}-{{ imagebuilder:buildDate }}",
               kmsKeyId: `arn:aws:kms:${region}:${accountId}:alias/aws/ebs`,
               targetAccountIds: [accountId],
             },
