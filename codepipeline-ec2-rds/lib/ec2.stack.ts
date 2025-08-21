@@ -31,6 +31,9 @@ export class Ec2Stack extends cdk.Stack {
         iam.ManagedPolicy.fromAwsManagedPolicyName(
           "CloudWatchAgentServerPolicy"
         ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "AmazonSSMManagedInstanceCore"
+        ),
       ],
     });
 
