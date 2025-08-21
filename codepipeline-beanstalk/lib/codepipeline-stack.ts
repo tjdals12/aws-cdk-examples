@@ -15,8 +15,8 @@ export class CodepipelineStack extends cdk.Stack {
       output: sourceOutput,
       actionName: "myproject-source",
       owner: "tjdals12",
-      repo: "my-project",
-      branch: "feat/amazon-linux",
+      repo: "nestjs-cdk-example",
+      branch: "codepipeline-beanstalk",
       oauthToken: secretsmanager.Secret.fromSecretNameV2(
         this,
         "GithubToken",

@@ -60,6 +60,9 @@ export class BeanstalkStack extends cdk.Stack {
         iam.ManagedPolicy.fromAwsManagedPolicyName(
           "AmazonSSMManagedInstanceCore"
         ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "CloudWatchAgentServerPolicy"
+        ),
       ],
     });
     instanceProfileRole.addToPolicy(
@@ -114,6 +117,11 @@ export class BeanstalkStack extends cdk.Stack {
           },
 
           // Instance
+          {
+            namespace: "aws:autoscaling:launchconfiguration",
+            optionName: "ImageId",
+            value: "ami-0f24a0f662ecc7149",
+          },
           {
             namespace: "aws:autoscaling:launchconfiguration",
             optionName: "IamInstanceProfile",
@@ -230,6 +238,23 @@ export class BeanstalkStack extends cdk.Stack {
           //   optionName: "SecurityGroups",
           //   value: albSecurityGroup.securityGroupId,
           // },
+
+          // Logs
+          {
+            namespace: "aws:elasticbeanstalk:cloudwatch:logs",
+            optionName: "StreamLogs",
+            value: "true",
+          },
+          {
+            namespace: "aws:elasticbeanstalk:cloudwatch:logs",
+            optionName: "RetentionInDays",
+            value: "7",
+          },
+          {
+            namespace: "aws:elasticbeanstalk:cloudwatch:logs",
+            optionName: "DeleteOnTerminate",
+            value: "false",
+          },
 
           // Env
           {
