@@ -65,7 +65,8 @@ const cloudwatchDashboardStack = new CloudWatchDashboardStack(
   {
     project,
     emails: alarmEmails,
-    ec2Instance: ec2Stack.instance,
     slackWebhookUrl: SLACK_WEBHOOK_URL,
+    ec2Instance: ec2Stack.instance,
+    rdsInstance: rdsStack.instance,
   }
 );

@@ -13,6 +13,7 @@ interface RdsStackProps extends cdk.StackProps {
 
 export class RdsStack extends cdk.Stack {
   readonly secret: secretsmanager.ISecret;
+  readonly instance: rds.DatabaseInstance;
 
   constructor(scope: Construct, id: string, props: RdsStackProps) {
     super(scope, id, props);
@@ -55,5 +56,6 @@ export class RdsStack extends cdk.Stack {
     });
 
     this.secret = rdsInstance.secret!;
+    this.instance = rdsInstance;
   }
 }
