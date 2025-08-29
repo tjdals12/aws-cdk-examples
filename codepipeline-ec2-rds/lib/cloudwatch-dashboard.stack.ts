@@ -12,6 +12,7 @@ import * as snsSubscription from "aws-cdk-lib/aws-sns-subscriptions";
 import * as cloudwatchActions from "aws-cdk-lib/aws-cloudwatch-actions";
 import * as lambdaNodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as logs from "aws-cdk-lib/aws-logs";
 
 interface CloudWatchDashboardStackProps extends cdk.StackProps {
   project: string;
@@ -45,6 +46,11 @@ export class CloudWatchDashboardStack extends cdk.Stack {
         environment: {
           SLACK_WEBHOOK_URL: slackWebhookUrl,
         },
+        logGroup: new logs.LogGroup(this, "lambda-log-group", {
+          logGroupName: "/aws/lambda/send-to-slack",
+          retention: logs.RetentionDays.ONE_WEEK,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        }),
       }
     );
 
