@@ -14,6 +14,7 @@ import * as firehose from "aws-cdk-lib/aws-kinesisfirehose";
 export interface LogPipelineStackProps extends cdk.StackProps {
   project: string;
   stage: string;
+  dataLakeBucket: s3.IBucket;
 }
 
 export class LogPipelineStack extends cdk.Stack {
@@ -22,7 +23,7 @@ export class LogPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: LogPipelineStackProps) {
     super(scope, id, props);
 
-    const { project, stage } = props;
+    const { project, stage, dataLakeBucket } = props;
     const projectStage = `${project}-${stage}`;
 
     const fnName = `${projectStage}-transform-event-log`;
@@ -50,27 +51,27 @@ export class LogPipelineStack extends cdk.Stack {
       version: fnVersion,
     });
 
-    const dataLakeBucket = new s3.Bucket(this, "data-lake-bucket", {
-      bucketName: `${projectStage}-data-lake`,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      versioned: true,
-      enforceSSL: true,
-      autoDeleteObjects: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      lifecycleRules: [
-        {
-          // 완료되지 않은 멀티 파트 업로드
-          id: "abort-mpu-7d",
-          abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
-        },
-        {
-          // 만료된 삭제 마커 정리 (삭제 마커가 있고, 이전 버전이 존재하지 않는 오브젝트)
-          id: "cleanup-expired-delete-markers",
-          expiredObjectDeleteMarker: true,
-        },
-      ],
-    });
+    // const dataLakeBucket = new s3.Bucket(this, "data-lake-bucket", {
+    //   bucketName: `${projectStage}-data-lake`,
+    //   encryption: s3.BucketEncryption.S3_MANAGED,
+    //   blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    //   versioned: true,
+    //   enforceSSL: true,
+    //   autoDeleteObjects: true,
+    //   removalPolicy: cdk.RemovalPolicy.DESTROY,
+    //   lifecycleRules: [
+    //     {
+    //       // 완료되지 않은 멀티 파트 업로드
+    //       id: "abort-mpu-7d",
+    //       abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
+    //     },
+    //     {
+    //       // 만료된 삭제 마커 정리 (삭제 마커가 있고, 이전 버전이 존재하지 않는 오브젝트)
+    //       id: "cleanup-expired-delete-markers",
+    //       expiredObjectDeleteMarker: true,
+    //     },
+    //   ],
+    // });
 
     const streamRole = new iam.Role(this, "stream-role", {
       roleName: `${projectStage}-stream-role`,
